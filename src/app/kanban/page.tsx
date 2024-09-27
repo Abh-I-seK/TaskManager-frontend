@@ -26,9 +26,11 @@ const TaskCard: React.FC<{
       isDragging: !!monitor.isDragging(),
     }),
   }))
-
+  const dragRef = (element: HTMLDivElement | null) => {
+    drag(element)
+  }
   return (
-    <div ref={drag} style={{ opacity: isDragging ? 0.5 : 1 }}>
+    <div ref={dragRef} style={{ opacity: isDragging ? 0.5 : 1 }}>
       <Card className="mb-4 bg-[#171717] border-[#07070758] rounded-md cursor-pointer">
         <Dialog>
           <DialogTrigger asChild>
@@ -59,14 +61,15 @@ const Column: React.FC<{
   status: "Todo" | "InProgress" | "Completed"
   moveTask: (id: string, status: "Todo" | "InProgress" | "Completed") => void
 }> = ({ title, tasks, status, moveTask }) => {
-  const [, drop] = useDrop(() => ({
+  const [, drop ,] = useDrop(() => ({
     accept: "task",
     drop: (item: { id: string }) => moveTask(item.id, status),
   }))
-
+  const dropRef = (element: HTMLDivElement | null) => {
+    drop(element)
+  }
   return (
-    <div
-      ref={drop}
+    <div ref={dropRef}
       className="bg-gray-950 border-2 border-gray-800 p-4 rounded-lg shadow-lg flex-1 min-h-[500px]"
     >
       <h2 className="text-xl font-bold mb-4 text-gray-200 text-center">{title}</h2>
