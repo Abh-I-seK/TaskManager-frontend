@@ -12,6 +12,11 @@ export async function revalidateCache(path : string) {
     }
 }
 
+export async function getCookie(){
+    const token = cookies().get("token");
+    return token?.value;
+}
+
 export async function removeCookie() {
     try{
         cookies().delete("token");

@@ -21,7 +21,7 @@ export default function Home() {
         <header className="text-center mb-12">
           <h1 className="text-4xl font-bold mb-4">Welcome to TaskMaster</h1>
           <p className="text-xl text-gray-300 mb-8">Organize your tasks, boost your productivity</p>
-          {loggedIn ? (
+          {user ? (
             <div className="bg-gray-800 rounded-lg p-6 mb-8 inline-block">
               <p className="text-2xl font-semibold mb-2">Welcome back, <span className="text-blue-400">{user}</span>!</p>
               <p className="text-gray-300">Ready to tackle your <u><Link href={"/list"}>tasks</Link></u>?</p>

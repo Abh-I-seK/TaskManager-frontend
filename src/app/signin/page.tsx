@@ -33,7 +33,8 @@ async function login(formData: FormData) {
   if (response.status === 200) {
     cookies().set("token", response.data.token)
     // revalidateCache("/");
-    redirect("/")
+    revalidateCache("/")
+    redirect("/redirect")
   } else {
     return { error: "Login failed. Please check your credentials." }
   }

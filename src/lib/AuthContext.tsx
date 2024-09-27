@@ -1,6 +1,7 @@
 "use client";
 import { createContext, ReactNode, useState, useEffect,useMemo } from "react"
-import { getCookie } from "./utils";
+// import { getCookie } from "./utils";
+import { getCookie } from "./server";
 export interface AuthContextType {
   user: string
   loggedIn: boolean
@@ -23,8 +24,8 @@ export default function AuthContextProvider({
     const [loggedIn, setLoggedIn] = useState(false)
 
     useEffect(() => {
-        const token = getCookie("token");
         const fetchUser = async () => {
+          const token = await getCookie();
           try {
             if(!token){
               setLoggedIn(false)
