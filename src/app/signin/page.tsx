@@ -13,6 +13,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { revalidatePath, revalidateTag } from "next/cache"
+import { revalidateCache } from "@/lib/server"
 
 
 async function login(formData: FormData) {
@@ -31,8 +32,7 @@ async function login(formData: FormData) {
 
   if (response.status === 200) {
     cookies().set("token", response.data.token)
-    revalidateTag("hello")
-    revalidatePath("/")
+    // revalidateCache("/");
     redirect("/")
   } else {
     return { error: "Login failed. Please check your credentials." }

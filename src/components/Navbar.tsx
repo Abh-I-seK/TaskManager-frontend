@@ -16,8 +16,8 @@ export default function Navbar() {
           <p className="text-xl">{user}</p>{" "}
           <button
             className="bg-blue-600 hover:bg-blue-700 text-lg text-white px-2 py-1 rounded-md"
-            onClick={() => {
-              removeCookie("token")
+            onClick={async() => {
+              await removeCookie()
               window.location.reload();
             }}
           >

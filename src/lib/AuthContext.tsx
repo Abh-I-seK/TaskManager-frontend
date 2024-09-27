@@ -33,8 +33,7 @@ export default function AuthContextProvider({
             }
             setLoading(true);
             
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/check`,{
-              next:{tags:["hello"]},
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/check`, {
               headers:{
                 "Authorization": `Bearer ${token}`
               }
@@ -53,10 +52,10 @@ export default function AuthContextProvider({
         fetchUser()
     }, [])
     
-    const contextValue = useMemo(()=>({ user, loggedIn }),[user , loggedIn]) 
+    // const contextValue = useMemo(()=>({ user, loggedIn }),[user , loggedIn]) 
     // const contextValue = { user, loggedIn };
     return (
-        <AuthContext.Provider value={contextValue}>
+        <AuthContext.Provider value={{user, loggedIn}}>
           {!loading ? children : <div className="size-full flex min-h-screen bg-gradient-to-b from-black to-gray-900 justify-center items-center">
         loading...
       </div>}
