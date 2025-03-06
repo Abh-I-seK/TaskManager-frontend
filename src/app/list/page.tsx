@@ -23,7 +23,6 @@ import { revalidateCache } from "@/lib/server"
 import Navbar from "@/components/Navbar"
 import AddTask from "@/components/AddTask"
 import Link from "next/link"
-
 export type Task = {
   _id: string
   title: string

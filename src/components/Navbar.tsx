@@ -8,13 +8,16 @@ export default function Navbar() {
   const { user, loggedIn } = useContext(AuthContext)
   return (
     <div className="flex justify-between items-center mb-2">
-      <h1 className="text-3xl font-bold text-gray-100"><Link href={"/"}>Task Manager</Link></h1>
+      <h1 className="text-3xl font-bold text-gray-100">
+        <Link href={"/"}>Task Manager</Link>
+      </h1>
+      <div>
       {user ? (
         <div className="flex gap-3 items-center">
           <div className="text-xl">{user}</div>{" "}
           <button
             className="bg-blue-600 hover:bg-blue-700 text-lg text-white px-2 py-1 rounded-md"
-            onClick={async() => {
+            onClick={async () => {
               await removeCookie()
               window.location.reload()
             }}
@@ -23,12 +26,20 @@ export default function Navbar() {
           </button>
         </div>
       ) : (
-        <Link href="/signin">
-          <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
-            Login
-          </button>
-        </Link>
+        <>
+          <Link href="/signin">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md mr-4">
+              SignIn
+            </button>
+          </Link>
+          <Link href="/signup">
+            <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md">
+              SignUp
+            </button>
+          </Link>
+        </>
       )}
+      </div>
     </div>
   )
 }
