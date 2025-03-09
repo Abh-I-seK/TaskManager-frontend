@@ -1,10 +1,7 @@
 "use client"
 import { getCookie } from "@/lib/utils"
 import { format } from "date-fns"
-import {
-  Calendar as CalendarIcon,
-  Plus,
-} from "lucide-react"
+import { Calendar as CalendarIcon, Plus, PlusIcon } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Calendar } from "@/components/ui/calendar"
@@ -42,8 +39,11 @@ import { Textarea } from "@/components/ui/textarea"
 import { Task } from "@/app/list/page"
 import { useForm } from "react-hook-form"
 
-
-export default function AddTask({setTasks} : {setTasks : (task : Task[]) => void}) {
+export default function AddTask({
+  setTasks,
+}: {
+  setTasks: (task: Task[]) => void
+}) {
   const form = useForm<Task>({
     defaultValues: {
       title: "",
@@ -79,14 +79,16 @@ export default function AddTask({setTasks} : {setTasks : (task : Task[]) => void
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-blue-600 hover:bg-blue-700 text-white">
-          <Plus className="mr-2 h-4 w-4" /> Add Task
+        <Button>
+          <PlusIcon className="mr-2 h-4 w-4" />
+          Add Task
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px] bg-gray-800 text-gray-100">
+      {/* bg-gray-800 text-gray-100 */}
+      <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Add New Task</DialogTitle>
-          <DialogDescription className="text-gray-400">
+          <DialogTitle className="text-black dark:text-white">Add New Task</DialogTitle>
+          <DialogDescription>
             Create a new task to manage your work efficiently.
           </DialogDescription>
         </DialogHeader>
@@ -97,12 +99,12 @@ export default function AddTask({setTasks} : {setTasks : (task : Task[]) => void
               name="title"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Title</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Enter task title"
                       {...field}
-                      className="bg-gray-700 text-gray-100 border-gray-600"
+                      className="text-black dark:text-white"
                     />
                   </FormControl>
                   <FormMessage />
@@ -114,12 +116,12 @@ export default function AddTask({setTasks} : {setTasks : (task : Task[]) => void
               name="description"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Description</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Description</FormLabel>
                   <FormControl>
                     <Textarea
                       placeholder="Enter task description"
                       {...field}
-                      className="bg-gray-700 text-gray-100 border-gray-600"
+                      className="text-black dark:text-white"
                     />
                   </FormControl>
                   <FormMessage />
@@ -131,17 +133,17 @@ export default function AddTask({setTasks} : {setTasks : (task : Task[]) => void
               name="status"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Status</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Status</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="bg-gray-700 text-gray-100 border-gray-600">
+                      <SelectTrigger className="text-black dark:text-white">
                         <SelectValue placeholder="Select task status" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-gray-700 text-gray-100 border-gray-600">
+                    <SelectContent className="text-black dark:text-white">
                       <SelectItem value="Todo">Todo</SelectItem>
                       <SelectItem value="InProgress">InProgress</SelectItem>
                       <SelectItem value="Completed">Completed</SelectItem>
@@ -156,17 +158,17 @@ export default function AddTask({setTasks} : {setTasks : (task : Task[]) => void
               name="priority"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Priority</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Priority</FormLabel>
                   <Select
                     onValueChange={field.onChange}
                     defaultValue={field.value}
                   >
                     <FormControl>
-                      <SelectTrigger className="bg-gray-700 text-gray-100 border-gray-600">
+                      <SelectTrigger className="text-black dark:text-white">
                         <SelectValue placeholder="Select task priority" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className="bg-gray-700 text-gray-100 border-gray-600">
+                    <SelectContent className="text-black dark:text-white">
                       <SelectItem value="Low">Low</SelectItem>
                       <SelectItem value="Medium">Medium</SelectItem>
                       <SelectItem value="High">High</SelectItem>
@@ -181,14 +183,14 @@ export default function AddTask({setTasks} : {setTasks : (task : Task[]) => void
               name="dueDate"
               render={({ field }) => (
                 <FormItem className="flex flex-col">
-                  <FormLabel>Due Date</FormLabel>
+                  <FormLabel className="text-black dark:text-white">Due Date</FormLabel>
                   <Popover>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full pl-3 text-left font-normal bg-gray-700 text-gray-100 border-gray-600",
+                            "w-full pl-3 text-left font-normal ",
                             !field.value && "text-gray-400"
                           )}
                         >
@@ -202,18 +204,17 @@ export default function AddTask({setTasks} : {setTasks : (task : Task[]) => void
                       </FormControl>
                     </PopoverTrigger>
                     <PopoverContent
-                      className="w-auto p-0 bg-gray-700 text-gray-100 border-gray-600"
+                      className="w-auto p-0 "
                       align="start"
                     >
                       <Calendar
                         mode="single"
-                        selected={field.value}
                         onSelect={field.onChange}
                         disabled={(date) =>
                           date < new Date() || date < new Date("1900-01-01")
                         }
                         initialFocus
-                        className="bg-gray-700 text-gray-100"
+                        className="text-black dark:text-white"
                       />
                     </PopoverContent>
                   </Popover>
@@ -223,7 +224,7 @@ export default function AddTask({setTasks} : {setTasks : (task : Task[]) => void
             />
             <Button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+              className="w-full"
             >
               Add Task
             </Button>

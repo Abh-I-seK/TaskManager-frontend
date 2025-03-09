@@ -12,10 +12,10 @@ import { format } from "date-fns";
 export default function DialogContentEdit({task,UpdateTask,DeleteTask}:{task : Task, UpdateTask: (formData: FormData, id: string) => void; DeleteTask: (id: string) => void;}) {
 
     return(
-        <DialogContent className="bg-gray-800 text-gray-100">
+        <DialogContent className="">
         <DialogHeader>
           <div className="flex justify-between items-center p-1">
-            <DialogTitle>Edit work item</DialogTitle>
+            <DialogTitle className="text-black dark:text-white">Edit work item</DialogTitle>
             <Button
               variant="ghost"
               size="sm"
@@ -36,7 +36,7 @@ export default function DialogContentEdit({task,UpdateTask,DeleteTask}:{task : T
           <div>
             <label
               htmlFor="title"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-black dark:text-white mb-1"
             >
               Title
             </label>
@@ -45,14 +45,14 @@ export default function DialogContentEdit({task,UpdateTask,DeleteTask}:{task : T
               id="title"
               name="title"
               defaultValue={task.title}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-white dark:bg-black rounded-md text-black dark:text-white border border-gray-500 focus:outline-none focus:ring-1 dark:focus:ring-gray-300 focus:ring-black"
               placeholder="Enter task title"
             />
           </div>
           <div>
             <label
               htmlFor="description"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-black dark:text-white mb-1"
             >
               Description
             </label>
@@ -61,14 +61,14 @@ export default function DialogContentEdit({task,UpdateTask,DeleteTask}:{task : T
               name="description"
               defaultValue={task.description}
               rows={3}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-white dark:bg-black rounded-md text-black dark:text-white border border-gray-500 focus:outline-none focus:ring-1 dark:focus:ring-gray-300 focus:ring-black"
               placeholder="Enter task description"
             ></textarea>
           </div>
           <div>
             <label
               htmlFor="status"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-black dark:text-white mb-1"
             >
               Status
             </label>
@@ -76,7 +76,7 @@ export default function DialogContentEdit({task,UpdateTask,DeleteTask}:{task : T
               id="status"
               name="status"
               defaultValue={task.status}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-white dark:bg-black rounded-md text-black dark:text-white border border-gray-500 focus:outline-none focus:ring-1 dark:focus:ring-gray-300 focus:ring-black"
             >
               <option value="Todo">Todo</option>
               <option value="InProgress">In Progress</option>
@@ -86,7 +86,7 @@ export default function DialogContentEdit({task,UpdateTask,DeleteTask}:{task : T
           <div>
             <label
               htmlFor="priority"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-black dark:text-white mb-1"
             >
               Priority
             </label>
@@ -94,7 +94,7 @@ export default function DialogContentEdit({task,UpdateTask,DeleteTask}:{task : T
               id="priority"
               name="priority"
               defaultValue={!task.priority ? "Medium" : task.priority}
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-white dark:bg-black rounded-md text-black dark:text-white border border-gray-500 focus:outline-none focus:ring-1 dark:focus:ring-gray-300 focus:ring-black"
             >
               <option value="Low">Low</option>
               <option value="Medium">Medium</option>
@@ -104,7 +104,7 @@ export default function DialogContentEdit({task,UpdateTask,DeleteTask}:{task : T
           <div>
             <label
               htmlFor="dueDate"
-              className="block text-sm font-medium text-gray-300 mb-1"
+              className="block text-sm font-medium text-black dark:text-white mb-1"
             >
               Due Date
             </label>
@@ -115,12 +115,12 @@ export default function DialogContentEdit({task,UpdateTask,DeleteTask}:{task : T
               defaultValue={
                 task.dueDate ? format(task.dueDate, "yyyy-MM-dd") : ""
               }
-              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 bg-white dark:bg-black rounded-md text-black dark:text-white border border-gray-500 focus:outline-none focus:ring-1 dark:focus:ring-gray-300 focus:ring-black"
             />
           </div>
           <button
             type="submit"
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-gray-800"
+            className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground shadow hover:bg-primary/90 h-9 px-4 py-2 w-full"
           >
             Update Task
           </button>

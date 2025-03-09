@@ -1,37 +1,30 @@
 "use client"
 import { useState, useEffect } from "react"
 import { getCookie } from "@/lib/utils"
-import {
-  ArrowDown,
-  ArrowUp,
-  ChevronDown,
-  ChevronsUpDown,
-  ChevronUp,
-} from "lucide-react"
 import axios from "axios"
 import { useForm } from "react-hook-form"
-import TaskRow from "./_component/TaskDisplay"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-} from "@/components/ui/dropdown-menu"
-import { DropdownMenuTrigger } from "@radix-ui/react-dropdown-menu"
-import { revalidateCache } from "@/lib/server"
 import Navbar from "@/components/Navbar"
 import AddTask from "@/components/AddTask"
+import { Button } from "@/components/ui/button"
+import {
+  FilterIcon,
+  LayoutGridIcon,
+  ListIcon,
+  SquareKanban,
+} from "lucide-react"
+import CardView from "./_component/CardView"
+import ListView from "./_component/ListView"
 import Link from "next/link"
-export type Task = {
-  _id: string
-  title: string
-  description?: string
-  status: "Todo" | "InProgress" | "Completed"
-  priority: "Low" | "Medium" | "High"
-  dueDate?: Date
-}
+import LoadingScreen from "@/components/LoadingScreen"
 
+export type Task = {
+  _id: string;
+  title: string;
+  description: string;
+  status: "Todo" | "InProgress" | "Completed";
+  priority: string;
+  dueDate: string;
+}
 const statusPriority = {
   Todo: 1,
   InProgress: 2,
@@ -46,24 +39,26 @@ const priorityPriority = {
 
 export default function TaskList() {
   const [tasks, setTasks] = useState<Task[]>([])
+  const [error, setError] = useState<string | null>(null)
+  const [view, setView] = useState("list")
+  // function StatusSort(a1: Task[]) {
+  //   a1.sort((a, b) => statusPriority[a.status] - statusPriority[b.status])
+  //   return tasks
+  // }
 
-  function StatusSort(a1: Task[]) {
-    a1.sort((a, b) => statusPriority[a.status] - statusPriority[b.status])
-    return tasks
-  }
-
-  function PrioritySort(a1: Task[]) {
-    a1.sort(
-      (a, b) => priorityPriority[a.priority] - priorityPriority[b.priority]
-    )
-    return tasks
-  }
+  // function PrioritySort(a1: Task[]) {
+  //   a1.sort(
+  //     (a, b) => priorityPriority[a.priority] - priorityPriority[b.priority]
+  //   )
+  //   return tasks
+  // }
 
   useEffect(() => {
     const fetchNotes = async () => {
       const token = getCookie("token")
       if (!token) {
-        return
+        setError("Authentication token missing ");
+        return;
       }
       try {
         const response = await fetch(
@@ -92,7 +87,7 @@ export default function TaskList() {
     },
   })
 
-    const UpdateTask = async (e: FormData, id: string) => {
+  const UpdateTask = async (e: FormData, id: string) => {
     const data = {
       title: e.get("title"),
       description: e.get("description"),
@@ -139,119 +134,85 @@ export default function TaskList() {
       alert(e.response.data.msg)
     }
   }
-  if (!tasks)
+
+
+  if (error) {
     return (
-      <div className="size-full flex min-h-screen bg-gradient-to-b from-black to-gray-900 justify-center items-center">
-        loading...
+      <div className="min-h-screen bg-gray-50 dark:bg-black flex items-center justify-center">
+        <div className="text-red-600 dark:text-red-400 text-xl">Error: {error + " " }{"👉"} <Link href={"/"} className="underline">click me</Link></div>
       </div>
     )
+  }
+
+  if (!tasks){
+    return (
+      <LoadingScreen/>
+    )
+  }
+
 
   return (
-    <div className="h-screen text-gray-100 py-8 bg-gradient-to-b from-black to-gray-900">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <Navbar/>
-        <div className="rounded-lg shadow-lg overflow-hidden">
-          <div className="p-6">
-            <div className="flex justify-between items-center mb-6">
-              <AddTask setTasks={setTasks}/>
-              <Link href={"/kanban"} className="bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-md">
-                Board View   
+    <div className="min-h-screen bg-background text-foreground md:px-8">
+      <nav className="p-6">
+        <Navbar />
+      </nav>
+      <main className="container mx-auto">
+        <div className="flex items-center justify-between mx-12">
+          {/* <h1 className="text-2xl font-bold">My Tasks</h1> */}
+          <h1></h1>
+          <div className="flex items-center gap-2">
+            <AddTask setTasks={setTasks} />
+            <div className="flex items-center rounded-md border bg-background p-1">
+              <Button
+                variant={view === "list" ? "default" : "ghost"}
+                size="sm"
+                className="h-8 w-8 p-0"
+                onClick={() => setView("list")}
+              >
+                <ListIcon className="h-4 w-4" />
+                <span className="sr-only">List view</span>
+              </Button>
+              <Button
+                variant={view === "grid" ? "default" : "ghost"}
+                size="sm"
+                className="h-8 w-8 p-0"
+                onClick={() => setView("grid")}
+              >
+                <LayoutGridIcon className="h-4 w-4" />
+                <span className="sr-only">Grid view</span>
+              </Button>
+              <Link href={"/kanban"} target="_blank">
+                <Button
+                  variant={"ghost"}
+                  size="sm"
+                  className="h-8 w-8 p-0"
+                >
+                  <SquareKanban className="h-4 w-4" />
+                  <span className="sr-only">Grid view</span>
+                </Button>
               </Link>
             </div>
-            <div className="space-y-4">
-              <div className="overflow-x-auto rounded-md">
-                <table className="w-full text-sm text-left text-gray-300">
-                  <thead className="text-xs bg-amber-50 border border-zinc-100 text-black rounded-md">
-                    <tr>
-                      <th scope="col" className="px-6 py-3">
-                        Title
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Due Date
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger>
-                            <p className="flex items-center gap-1">
-                              Status
-                              <ChevronsUpDown className="w-3" />
-                            </p>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuLabel>Filter By</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setTasks(StatusSort(tasks))
-                                revalidateCache("/list")
-                              }}
-                            >
-                              Ascending
-                              <ChevronUp className="w-4 ml-2" />
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setTasks(StatusSort(tasks).reverse())
-                                revalidateCache("/list")
-                              }}
-                            >
-                              Descending
-                              <ChevronDown className="w-4 ml-2" />
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        <DropdownMenu>
-                          <DropdownMenuTrigger>
-                            <p className="flex gap-1 items-center">
-                              Priority
-                              <ChevronsUpDown className="w-3" />
-                            </p>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent>
-                            <DropdownMenuLabel>Filter By</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setTasks(PrioritySort(tasks))
-                                revalidateCache("/list")
-                              }}
-                            >
-                              Ascending
-                              <ArrowUp className="w-4 ml-2" />
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => {
-                                setTasks(PrioritySort(tasks).reverse())
-                                revalidateCache("/list")
-                              }}
-                            >
-                              Descending
-                              <ArrowDown className="w-4 ml-2" />
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </th>
-                      <th scope="col" className="px-6 py-3"></th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tasks.map((task) => (
-                      <TaskRow
-                        key={task._id}
-                        task={task}
-                        UpdateTask={UpdateTask}
-                        DeleteTask={DeleteTask}
-                      />
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
+            <Button variant="outline" size="icon" disabled={true}>
+              <FilterIcon className="h-4 w-4" />
+              <span className="sr-only">Filter</span>
+            </Button>
           </div>
         </div>
-      </div>
+
+        {view === "list" ? (
+          <ListView
+            tasks={tasks}
+            updateTask={UpdateTask}
+            deleteTask={DeleteTask}
+          />
+        ) : (
+          <CardView
+            tasks={tasks}
+            updateTask={UpdateTask}
+            deleteTask={DeleteTask}
+          />
+        )}
+      </main>
     </div>
   )
 }
