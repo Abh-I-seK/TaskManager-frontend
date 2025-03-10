@@ -1,5 +1,5 @@
 "use client"
-import { priorityStyles, statusStyles } from "@/lib/utils"
+import { getPriorityStyles, statusStyles } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import {
@@ -16,7 +16,6 @@ import { format } from "date-fns"
 import DialogContentEdit from "@/components/DialogContentEdit"
 import { Task } from "../page"
 import ClickDialogContent from "./ClickDialogContent"
-import { getPriorityStyles } from "@/lib/utils"
 
 export default function ListView(props: {
   tasks: Task[]
